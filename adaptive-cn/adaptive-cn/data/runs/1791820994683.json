@@ -1,0 +1,386 @@
+{
+  "state": {
+    "source": "simulation",
+    "running": true,
+    "mode": "predictive",
+    "scenario": "ramp",
+    "tick": 5,
+    "route": [
+      "s1",
+      "s2",
+      "s4"
+    ],
+    "applied_route": [
+      "s1",
+      "s2",
+      "s4"
+    ],
+    "links": [
+      {
+        "utilization": 0.42108616870856974,
+        "offered_mbps": 4.25,
+        "tx_mbps": 4.25,
+        "id": "s1-s2",
+        "source": "s1",
+        "target": "s2",
+        "capacity_mbps": 10,
+        "base_delay_ms": 5,
+        "forecast": null,
+        "risk": null,
+        "prediction_status": "warming up"
+      },
+      {
+        "utilization": 0.5012497195742627,
+        "offered_mbps": 5.0,
+        "tx_mbps": 5.0,
+        "id": "s2-s4",
+        "source": "s2",
+        "target": "s4",
+        "capacity_mbps": 10,
+        "base_delay_ms": 5,
+        "forecast": null,
+        "risk": null,
+        "prediction_status": "warming up"
+      },
+      {
+        "utilization": 0.029332026393489575,
+        "offered_mbps": 0.25,
+        "tx_mbps": 0.25,
+        "id": "s1-s3",
+        "source": "s1",
+        "target": "s3",
+        "capacity_mbps": 10,
+        "base_delay_ms": 8,
+        "forecast": null,
+        "risk": null,
+        "prediction_status": "warming up"
+      },
+      {
+        "utilization": 0.018090982635492855,
+        "offered_mbps": 0.25,
+        "tx_mbps": 0.25,
+        "id": "s3-s4",
+        "source": "s3",
+        "target": "s4",
+        "capacity_mbps": 10,
+        "base_delay_ms": 8,
+        "forecast": null,
+        "risk": null,
+        "prediction_status": "warming up"
+      }
+    ],
+    "metrics": {
+      "latency_ms": 20,
+      "loss_percent": 0,
+      "throughput_mbps": 4.0,
+      "jitter_ms": 0
+    },
+    "history": [
+      {
+        "tick": 1,
+        "latency_ms": 20,
+        "loss_percent": 0,
+        "throughput_mbps": 4.0,
+        "jitter_ms": 0,
+        "max_utilization": 0.4933501505731173
+      },
+      {
+        "tick": 2,
+        "latency_ms": 20,
+        "loss_percent": 0,
+        "throughput_mbps": 4.0,
+        "jitter_ms": 0,
+        "max_utilization": 0.5024737928239208
+      },
+      {
+        "tick": 3,
+        "latency_ms": 20,
+        "loss_percent": 0,
+        "throughput_mbps": 4.0,
+        "jitter_ms": 0,
+        "max_utilization": 0.49341716107213296
+      },
+      {
+        "tick": 4,
+        "latency_ms": 20,
+        "loss_percent": 0,
+        "throughput_mbps": 4.0,
+        "jitter_ms": 0,
+        "max_utilization": 0.4957837271096131
+      },
+      {
+        "tick": 5,
+        "latency_ms": 20,
+        "loss_percent": 0,
+        "throughput_mbps": 4.0,
+        "jitter_ms": 0,
+        "max_utilization": 0.5012497195742627
+      }
+    ],
+    "events": [],
+    "telemetry_age_seconds": 0.2,
+    "stale": false,
+    "controller_age_seconds": null,
+    "model": {
+      "model": "Ridge autoregressive forecast + empirical residual risk",
+      "provenance": "SYNTHETIC demonstration data, not real network evidence",
+      "window_samples": 10,
+      "horizon_samples": 5,
+      "sample_seconds": 1,
+      "congestion_threshold": 0.85,
+      "split": "independent sequences: 60% train / 20% calibration / 20% test",
+      "train_samples": 3045,
+      "calibration_samples": 1015,
+      "test_samples": 1160,
+      "mae": 0.07939401260238395,
+      "rmse": 0.15133801797640276,
+      "precision": 0.8902439024390244,
+      "recall": 0.553030303030303,
+      "f1": 0.6822429906542056
+    },
+    "metric_provenance": "analytical simulation"
+  },
+  "samples": [
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 1,
+      "time": 1791820995.0477877,
+      "link": "s1-s2",
+      "utilization": 0.4269519751784104,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 1,
+      "time": 1791820995.0477877,
+      "link": "s2-s4",
+      "utilization": 0.4933501505731173,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 1,
+      "time": 1791820995.0477877,
+      "link": "s1-s3",
+      "utilization": 0.021850410457167672,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 1,
+      "time": 1791820995.0477877,
+      "link": "s3-s4",
+      "utilization": 0.02112495033408352,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 2,
+      "time": 1791820996.0483258,
+      "link": "s1-s2",
+      "utilization": 0.42831059699829616,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 2,
+      "time": 1791820996.0483258,
+      "link": "s2-s4",
+      "utilization": 0.5024737928239208,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 2,
+      "time": 1791820996.0483258,
+      "link": "s1-s3",
+      "utilization": 0.030490513947867837,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 2,
+      "time": 1791820996.0483258,
+      "link": "s3-s4",
+      "utilization": 0.019217143656811826,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 3,
+      "time": 1791820997.048774,
+      "link": "s1-s2",
+      "utilization": 0.4239069054755938,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 3,
+      "time": 1791820997.048774,
+      "link": "s2-s4",
+      "utilization": 0.49341716107213296,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 3,
+      "time": 1791820997.048774,
+      "link": "s1-s3",
+      "utilization": 0.02106093164725045,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 3,
+      "time": 1791820997.048774,
+      "link": "s3-s4",
+      "utilization": 0.025074974033447075,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 4,
+      "time": 1791820998.0494802,
+      "link": "s1-s2",
+      "utilization": 0.41837150357557407,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 4,
+      "time": 1791820998.0494802,
+      "link": "s2-s4",
+      "utilization": 0.4957837271096131,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 4,
+      "time": 1791820998.0494802,
+      "link": "s1-s3",
+      "utilization": 0.027098382128913325,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 4,
+      "time": 1791820998.0494802,
+      "link": "s3-s4",
+      "utilization": 0.025629180728445035,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 5,
+      "time": 1791820999.0506945,
+      "link": "s1-s2",
+      "utilization": 0.42108616870856974,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 5,
+      "time": 1791820999.0506945,
+      "link": "s2-s4",
+      "utilization": 0.5012497195742627,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 5,
+      "time": 1791820999.0506945,
+      "link": "s1-s3",
+      "utilization": 0.029332026393489575,
+      "forecast": null,
+      "risk": null
+    },
+    {
+      "session": "1791820994683",
+      "source": "simulation",
+      "mode": "predictive",
+      "scenario": "ramp",
+      "tick": 5,
+      "time": 1791820999.0506945,
+      "link": "s3-s4",
+      "utilization": 0.018090982635492855,
+      "forecast": null,
+      "risk": null
+    }
+  ],
+  "probes": []
+}

@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADAPTIVE CN • Computer Networks Capstone Project</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand-container">
+      <a class="brand" href="/">
+        <span class="brand-symbol">●</span>
+        <span>ADAPTIVE CN</span>
+      </a>
+      <span class="brand-subtitle">Computer Networks Lab Project • SDN &amp; Machine Learning</span>
+    </div>
+    <div class="header-right">
+      <span id="source-badge" class="badge">Simulation Mode</span>
+      <span class="dot" id="connection-dot" aria-hidden="true"></span>
+      <span id="connection-status">Connected</span>
+      <button id="theme-toggle" class="button-subtle" title="Toggle contrast mode" aria-label="Toggle contrast" style="display: none;">☼</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. PROJECT OVERVIEW & CONTROL BAR -->
+    <section class="hero-card">
+      <div class="hero-content">
+        <p class="eyebrow">FINAL YEAR PROJECT • AUTONOMOUS SDN TRAFFIC ENGINEERING</p>
+        <h1>Dynamic Network Congestion Prediction &amp; OpenFlow Routing</h1>
+        <p class="hero-summary">
+          This system demonstrates proactive flow-level traffic engineering in Software-Defined Networks. 
+          A time-series autoregressive model forecasts link utilization 5 seconds ahead. When impending bottleneck congestion is detected, 
+          the centralized controller updates switch flow tables via weighted Dijkstra's algorithm, safely steering foreground packets to alternate paths before buffer drops occur.
+        </p>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="hero-actions">
+        <div class="primary-controls">
+          <button id="start-btn" class="button primary">
+            <span class="btn-icon">▶</span> <span id="start-btn-label">Start Experiment</span>
+          </button>
+          <button id="guided-btn" class="button secondary">
+            <span class="btn-icon">★</span> Guided Walkthrough
+          </button>
+          <button id="reset-btn" class="button">Reset</button>
+          <button id="compare-btn" class="button accent-outline">
+            <span class="btn-icon">⚖</span> Compare Routing Modes
+          </button>
+        </div>
+        <div class="status-pill-row">
+          <span class="pill" id="elapsed-pill">Elapsed: 0s / 120s</span>
+          <span class="pill" id="route-pill">Route: S1 &rarr; S2 &rarr; S4</span>
+          <span class="pill" id="traffic-pill">Traffic: 0.0 Mbps</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guided Demo Banner (shown during guided walkthrough) -->
+    <div id="guided-banner" class="guided-banner" style="display: none;">
+      <div class="guided-step-badge" id="guided-step-badge">Phase 1 / 5</div>
+      <div class="guided-text">
+        <strong id="guided-step-title">Normal Baseline Traffic</strong>
+        <p id="guided-step-desc">Transferring foreground traffic along the initial shortest path.</p>
+      </div>
+      <button id="guided-dismiss" class="button-subtle">Exit demo</button>
+    </div>
+
+    <!-- 2. UNDERSTAND THIS EXPERIMENT -->
+    <details class="explain-card" open>
+      <summary class="explain-summary">
+        <span><strong>Network Concepts Reference</strong> &mdash; Key components and mechanisms</span>
+        <span class="toggle-icon">&plus;</span>
+      </summary>
+      <div class="explain-grid">
+        <div class="concept">
+          <strong>End Hosts (H1 &ndash; H4)</strong>
+          <p>H1 transmits critical foreground traffic to H2. H3 transmits competing background traffic to H4 across the shared bottleneck link.</p>
+        </div>
+        <div class="concept">
+          <strong>SDN Switches (S1 &ndash; S4)</strong>
+          <p>OpenFlow-enabled switches that forward IP packets according to flow rules installed by the centralized controller.</p>
+        </div>
+        <div class="concept">
+          <strong>Physical Links</strong>
+          <p>Inter-switch connections characterized by transmission capacity (e.g. 10 Mbps) and propagation delay (e.g. 5 ms).</p>
+        </div>
+        <div class="concept">
+          <strong>Buffer Congestion</strong>
+          <p>Occurs when total traffic demand exceeds physical link capacity, filling switch queues and causing packet loss and increased latency.</p>
+        </div>
+        <div class="concept">
+          <strong>AI Forecasting</strong>
+          <p>A Ridge Autoregressive model examines 10-second history to forecast utilization 5 seconds ahead and compute empirical congestion risk.</p>
+        </div>
+        <div class="concept">
+          <strong>Dynamic Dijkstra Routing</strong>
+          <p>Computes the lowest-cost path with risk penalties, guarded by a 10s cooldown timer and 15% hysteresis to eliminate route flapping.</p>
+        </div>
+      </div>
+    </details>
+
+    <!-- Source Notice -->
+    <div class="notice" id="notice-box">
+      <span class="notice-icon">ℹ</span>
+      <span id="notice-text">Simulation engine initialized. Ready to run experiments.</span>
+    </div>
+
+    <!-- 3. LIVE SYSTEM TELEMETRY PANEL -->
+    <section class="panel live-explanation-panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">LIVE TELEMETRY &amp; STATUS</p>
+          <h3>What is happening now?</h3>
+        </div>
+        <span class="state-badge" id="current-state-badge">Experiment not started</span>
+      </div>
+      
+      <div class="live-explanation-body">
+        <div class="state-details-card">
+          <h4 id="state-headline">System Ready</h4>
+          <p id="state-narrative">The simulation engine is initialized. Configure parameters below and click Start to begin telemetry collection.</p>
+          
+          <!-- Warmup progress bar -->
+          <div class="progress-container" id="warmup-container">
+            <div class="progress-labels">
+              <span id="warmup-label">Model Observations: 0 of 10 samples</span>
+              <span id="warmup-percent">0%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="warmup-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="decision-box" id="decision-box">
+            <strong>Routing Controller Rationale:</strong>
+            <span id="decision-text">Initial shortest path selected by baseline propagation delay.</span>
+          </div>
+        </div>
+
+        <div class="horizon-card">
+          <small class="horizon-tag">PREDICTION HORIZON</small>
+          <strong id="horizon-title">Predicting 5 seconds ahead</strong>
+          <p id="horizon-desc">The model evaluates a 10-second sliding history (10 samples polled at 1 Hz) and estimates link utilization 5 samples into the future.</p>
+          <div class="horizon-meta">
+            <span>Sampling: <strong>1.0s interval</strong></span>
+            <span>Forecast window: <strong>+5 samples ahead</strong></span>
+            <span>Congestion threshold: <strong>&ge; 85% capacity</strong></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. KEY METRICS STATS CARDS -->
+    <section class="stats">
+      <article>
+        <p>Round-Trip Latency</p>
+        <h2 id="latency-val">&mdash;</h2>
+        <small>ms &bull; lower is better</small>
+      </article>
+      <article>
+        <p>Packet Loss</p>
+        <h2 id="loss-val">&mdash;</h2>
+        <small>% &bull; buffer drops</small>
+      </article>
+      <article>
+        <p>Foreground Throughput</p>
+        <h2 id="throughput-val">&mdash;</h2>
+        <small>Mbps &bull; delivery at H2</small>
+      </article>
+      <article>
+        <p>Max Congestion Risk</p>
+        <h2 id="risk-val">&mdash;</h2>
+        <small>Probability &ge; 85%</small>
+      </article>
+    </section>
+
+    <!-- 5. EXPERIMENT CONTROLS -->
+    <section class="panel controls-panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">TESTBED CONTROLS</p>
+          <h3>Network &amp; Traffic Configuration</h3>
+        </div>
+        <span class="badge" id="config-status">Configuration applies dynamically</span>
+      </div>
+
+      <div class="controls-grid">
+        <label>
+          <span>Network topology</span>
+          <select id="ctrl-topology">
+            <option value="diamond">4-Switch Diamond (Verified Mininet + Sim)</option>
+            <option value="six_switch">6-Switch Ladder (Dual-bottleneck, alternate paths)</option>
+            <option value="eight_mesh">8-Switch Mesh Grid (High path diversity)</option>
+          </select>
+          <small class="field-hint" id="topo-hint">4 switches, 4 links. Classic diamond benchmark.</small>
+        </label>
+
+        <label>
+          <span>Routing strategy</span>
+          <select id="ctrl-mode">
+            <option value="predictive">AI Predictive Routing (Forecast + Risk)</option>
+            <option value="reactive">Reactive Routing (Threshold triggers)</option>
+            <option value="static">Static Shortest Path (Fixed)</option>
+          </select>
+          <small class="field-hint">Predictive switches before packet loss occurs.</small>
+        </label>
+
+        <label>
+          <span>Traffic scenario</span>
+          <select id="ctrl-scenario">
+            <option value="ramp">Gradual Ramp (Smooth increase &bull; ideal for demo)</option>
+            <option value="normal">Normal Traffic (Gentle oscillations below limit)</option>
+            <option value="burst">Sudden Bursts (Periodic intense spikes)</option>
+            <option value="heavy">Sustained Heavy Load (Continuous high demand)</option>
+          </select>
+          <small class="field-hint">Background traffic competing for bottleneck link.</small>
+        </label>
+
+        <label>
+          <span>Foreground traffic (protected)</span>
+          <div class="input-with-unit">
+            <input type="number" id="ctrl-fg" min="0.5" max="50" step="0.5" value="4.0">
+            <span class="unit">Mbps</span>
+          </div>
+          <small class="field-hint">Critical data flow between H1 and H2.</small>
+        </label>
+
+        <label>
+          <span>Bottleneck link capacity</span>
+          <div class="input-with-unit">
+            <input type="number" id="ctrl-cap" min="1" max="100" step="1" value="10">
+            <span class="unit">Mbps</span>
+          </div>
+          <small class="field-hint">Maximum physical transmission rate of each link.</small>
+        </label>
+
+        <label>
+          <span>Experiment duration</span>
+          <select id="ctrl-duration">
+            <option value="60">60 seconds</option>
+            <option value="120" selected>120 seconds</option>
+            <option value="180">180 seconds</option>
+            <option value="0">Unlimited (continuous)</option>
+          </select>
+          <small class="field-hint">Run length before automatic pause.</small>
+        </label>
+      </div>
+
+      <div class="controls-footer">
+        <label class="checkbox-label">
+          <input type="checkbox" id="ctrl-animation" checked>
+          <span>Show packet flow animation</span>
+          <small class="field-hint">(Visual aid along selected path)</small>
+        </label>
+        <div class="buttons">
+          <button id="apply-btn" class="button primary">Apply Parameters</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. TOPOLOGY AND PREDICTION WORKSPACE -->
+    <div class="workspace">
+      <!-- Topology Panel -->
+      <section class="panel topology-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">GRAPH VISUALIZATION</p>
+            <h3 id="topo-title">4-Switch Diamond Network</h3>
+          </div>
+          <span class="badge" id="topo-tick-badge">0 samples</span>
+        </div>
+
+        <div class="topology-wrapper" id="topology-wrapper">
+          <svg id="topo-svg" viewBox="0 0 740 340" role="img" aria-label="Interactive Network Topology diagram">
+            <!-- Rendered dynamically by app.js -->
+          </svg>
+        </div>
+
+        <!-- Legend -->
+        <div class="topo-legend">
+          <span><i class="legend-swatch normal"></i>Normal (&lt; 65%)</span>
+          <span><i class="legend-swatch warning"></i>Warning (65&ndash;85%)</span>
+          <span><i class="legend-swatch congested"></i>Congested (&ge; 85%)</span>
+          <span><i class="legend-swatch active-path"></i>Active Applied Route</span>
+          <span><i class="legend-swatch control-plane"></i>Control Plane</span>
+        </div>
+
+        <!-- Active vs Requested Route Status -->
+        <div class="route-card">
+          <div>
+            <small>CONTROLLER REQUESTED ROUTE</small>
+            <strong id="requested-route">S1 &rarr; S2 &rarr; S4</strong>
+          </div>
+          <div>
+            <small>CONFIRMED APPLIED ROUTE</small>
+            <strong id="applied-route">&mdash;</strong>
+          </div>
+        </div>
+
+        <!-- Inspector Card for Clicked Node/Link -->
+        <div id="inspector-card" class="inspector-card" style="display: none;">
+          <div class="inspector-header">
+            <strong id="inspector-title">Link Details: S2 &harr; S4</strong>
+            <button id="inspector-close" class="button-subtle">&times;</button>
+          </div>
+          <div class="inspector-grid" id="inspector-grid">
+            <!-- Injected by app.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Prediction Engine Panel -->
+      <section class="panel forecasts-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">PREDICTION TELEMETRY</p>
+            <h3>Per-Link Forecasting</h3>
+          </div>
+          <span class="badge" id="forecast-badge">Predicting +5s</span>
+        </div>
+
+        <div id="links-container" class="links-container">
+          <!-- Injected dynamically by app.js -->
+        </div>
+
+        <!-- Model Provenance & Educational Disclosure -->
+        <details class="model-info-details" open>
+          <summary>
+            <strong>Model Specifications &amp; Validation</strong>
+          </summary>
+          <div class="model-info-content">
+            <p id="model-provenance-text">Ridge Autoregressive Time-Series Model.</p>
+            <div class="model-metrics-grid" id="model-metrics-grid">
+              <!-- Injected by app.js -->
+            </div>
+            <p class="model-disclaimer">
+              <small><strong>Validation note:</strong> RMSE and MAE reflect continuous utilization forecasting error on the holdout test set. Precision, Recall, and F1 evaluate threshold classification (&ge; 85%).</small>
+            </p>
+          </div>
+        </details>
+      </section>
+    </div>
+
+    <!-- 7. PERFORMANCE CHARTS -->
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">REAL-TIME TELEMETRY CHARTS</p>
+          <h3>Performance Metrics Over Time</h3>
+        </div>
+        <span id="provenance-label" class="badge">Analytical simulation</span>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-box">
+          <p>Round-Trip Latency (ms)</p>
+          <canvas id="chart-latency" aria-label="Latency over time"></canvas>
+        </div>
+        <div class="chart-box">
+          <p>Peak Link Utilization (%)</p>
+          <canvas id="chart-util" aria-label="Peak link utilization over time"></canvas>
+        </div>
+        <div class="chart-box">
+          <p>Foreground Throughput (Mbps)</p>
+          <canvas id="chart-throughput" aria-label="Foreground throughput over time"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. ROUTING AUDIT TRAIL -->
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">CONTROLLER EVENT LOG</p>
+          <h3>Routing Decision Audit Timeline</h3>
+        </div>
+        <div class="buttons">
+          <a class="button" href="/api/export" download="cn-telemetry.csv">Export Telemetry CSV</a>
+          <button id="save-run-btn">Save Snapshot</button>
+        </div>
+      </div>
+      <div id="events-container" class="events-container">
+        <p class="field-hint">Start an experiment to record route decisions and controller acknowledgments.</p>
+      </div>
+    </section>
+
+    <!-- 9. MODAL: COMPARISON VIEW -->
+    <div id="comparison-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">BENCHMARK COMPARISON</p>
+            <h2>Static vs. Reactive vs. Predictive Routing</h2>
+          </div>
+          <button id="comparison-close-btn" class="button-subtle">&times;</button>
+        </div>
+        <p class="modal-intro">
+          This benchmark executes <strong>Static</strong>, <strong>Reactive</strong>, and <strong>Predictive</strong> routing sequentially under identical network conditions (same topology, traffic schedule, duration, and random seed).
+        </p>
+
+        <div class="comparison-toolbar">
+          <button id="run-comparison-exec" class="button primary">Run Simulation Comparison</button>
+          <button id="export-comp-csv" class="button" style="display: none;">Export CSV</button>
+          <button id="export-comp-json" class="button" style="display: none;">Export JSON</button>
+          <span id="comparison-status" class="field-hint">Ready to benchmark</span>
+        </div>
+
+        <div id="comparison-results" class="comparison-results" style="display: none;">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Routing Strategy</th>
+                <th>Mean Latency</th>
+                <th>Mean Throughput</th>
+                <th>Mean Packet Loss</th>
+                <th>Route Changes</th>
+                <th>Congested Seconds</th>
+              </tr>
+            </thead>
+            <tbody id="comparison-tbody">
+              <!-- Injected by app.js -->
+            </tbody>
+          </table>
+
+          <div class="comparison-notes">
+            <small><strong>Note:</strong> Benchmark runs in deterministic analytical simulation. Latencies and packet losses are measured using queue buffer overflow equations.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div>
+        <span>Adaptive CN &bull; Computer Networks &amp; SDN Lab Project</span>
+      </div>
+      <div id="error-banner" role="alert"></div>
+    </footer>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

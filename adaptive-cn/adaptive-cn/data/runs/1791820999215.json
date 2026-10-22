@@ -1,0 +1,51 @@
+{
+  "state": {
+    "source": "simulation",
+    "running": false,
+    "mode": "predictive",
+    "scenario": "ramp",
+    "tick": 0,
+    "route": [
+      "s1",
+      "s2",
+      "s4"
+    ],
+    "applied_route": [
+      "s1",
+      "s2",
+      "s4"
+    ],
+    "links": [],
+    "metrics": {
+      "latency_ms": null,
+      "loss_percent": null,
+      "throughput_mbps": null,
+      "jitter_ms": null
+    },
+    "history": [],
+    "events": [],
+    "telemetry_age_seconds": null,
+    "stale": false,
+    "controller_age_seconds": null,
+    "model": {
+      "model": "Ridge autoregressive forecast + empirical residual risk",
+      "provenance": "SYNTHETIC demonstration data, not real network evidence",
+      "window_samples": 10,
+      "horizon_samples": 5,
+      "sample_seconds": 1,
+      "congestion_threshold": 0.85,
+      "split": "independent sequences: 60% train / 20% calibration / 20% test",
+      "train_samples": 3045,
+      "calibration_samples": 1015,
+      "test_samples": 1160,
+      "mae": 0.07939401260238395,
+      "rmse": 0.15133801797640276,
+      "precision": 0.8902439024390244,
+      "recall": 0.553030303030303,
+      "f1": 0.6822429906542056
+    },
+    "metric_provenance": "analytical simulation"
+  },
+  "samples": [],
+  "probes": []
+}

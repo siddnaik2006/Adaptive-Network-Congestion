@@ -1,0 +1,281 @@
+{
+  "state": {
+    "source": "simulation",
+    "running": false,
+    "mode": "predictive",
+    "scenario": "ramp",
+    "topology": "diamond",
+    "topology_meta": {
+      "name": "4-Switch Diamond",
+      "description": "Classic 4-switch diamond topology with primary upper path and alternate lower path.",
+      "mininet_verified": true,
+      "verification_notice": "Verified in Mininet OpenFlow testbed and analytical simulation.",
+      "switches": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "hosts": {
+        "h1": {
+          "ip": "10.0.0.1",
+          "switch": "s1",
+          "port": 1,
+          "role": "sender",
+          "label": "H1 (Foreground Sender)"
+        },
+        "h2": {
+          "ip": "10.0.0.2",
+          "switch": "s4",
+          "port": 3,
+          "role": "receiver",
+          "label": "H2 (Foreground Receiver)"
+        },
+        "h3": {
+          "ip": "10.0.0.3",
+          "switch": "s2",
+          "port": 3,
+          "role": "bg_sender",
+          "label": "H3 (Background Sender)"
+        },
+        "h4": {
+          "ip": "10.0.0.4",
+          "switch": "s4",
+          "port": 4,
+          "role": "bg_receiver",
+          "label": "H4 (Background Receiver)"
+        }
+      },
+      "foreground_pair": [
+        "h1",
+        "h2"
+      ],
+      "background_pair": [
+        "h3",
+        "h4"
+      ],
+      "bottleneck_link": "s2-s4",
+      "links": [
+        {
+          "source": "s1",
+          "target": "s2",
+          "capacity_mbps": 10.0,
+          "delay_ms": 5.0,
+          "id": "s1-s2"
+        },
+        {
+          "source": "s2",
+          "target": "s4",
+          "capacity_mbps": 10.0,
+          "delay_ms": 5.0,
+          "id": "s2-s4"
+        },
+        {
+          "source": "s1",
+          "target": "s3",
+          "capacity_mbps": 10.0,
+          "delay_ms": 8.0,
+          "id": "s1-s3"
+        },
+        {
+          "source": "s3",
+          "target": "s4",
+          "capacity_mbps": 10.0,
+          "delay_ms": 8.0,
+          "id": "s3-s4"
+        }
+      ],
+      "layout": {
+        "viewBox": "0 0 740 340",
+        "switches": {
+          "s1": {
+            "x": 165,
+            "y": 170
+          },
+          "s2": {
+            "x": 350,
+            "y": 75
+          },
+          "s3": {
+            "x": 350,
+            "y": 265
+          },
+          "s4": {
+            "x": 535,
+            "y": 170
+          }
+        },
+        "hosts": {
+          "h1": {
+            "x": 50,
+            "y": 170,
+            "attach": "s1"
+          },
+          "h2": {
+            "x": 650,
+            "y": 170,
+            "attach": "s4"
+          },
+          "h3": {
+            "x": 350,
+            "y": 16,
+            "attach": "s2"
+          },
+          "h4": {
+            "x": 650,
+            "y": 75,
+            "attach": "s4"
+          }
+        },
+        "controller": {
+          "x": 165,
+          "y": 16
+        },
+        "engine": {
+          "x": 535,
+          "y": 16
+        }
+      }
+    },
+    "tick": 0,
+    "duration_seconds": 120,
+    "foreground_mbps": 4.0,
+    "traffic_mbps": 0.0,
+    "route": [
+      "s1",
+      "s2",
+      "s4"
+    ],
+    "applied_route": [
+      "s1",
+      "s2",
+      "s4"
+    ],
+    "links": [
+      {
+        "id": "s1-s2",
+        "source": "s1",
+        "target": "s2",
+        "capacity_mbps": 10.0,
+        "base_delay_ms": 5.0,
+        "offered_mbps": 0.0,
+        "tx_mbps": 0.0,
+        "offered_load": 0.0,
+        "utilization": 0.0,
+        "forecast": null,
+        "risk": null,
+        "prediction_status": "warming up (0/10 samples)"
+      },
+      {
+        "id": "s2-s4",
+        "source": "s2",
+        "target": "s4",
+        "capacity_mbps": 10.0,
+        "base_delay_ms": 5.0,
+        "offered_mbps": 0.0,
+        "tx_mbps": 0.0,
+        "offered_load": 0.0,
+        "utilization": 0.0,
+        "forecast": null,
+        "risk": null,
+        "prediction_status": "warming up (0/10 samples)"
+      },
+      {
+        "id": "s1-s3",
+        "source": "s1",
+        "target": "s3",
+        "capacity_mbps": 10.0,
+        "base_delay_ms": 8.0,
+        "offered_mbps": 0.0,
+        "tx_mbps": 0.0,
+        "offered_load": 0.0,
+        "utilization": 0.0,
+        "forecast": null,
+        "risk": null,
+        "prediction_status": "warming up (0/10 samples)"
+      },
+      {
+        "id": "s3-s4",
+        "source": "s3",
+        "target": "s4",
+        "capacity_mbps": 10.0,
+        "base_delay_ms": 8.0,
+        "offered_mbps": 0.0,
+        "tx_mbps": 0.0,
+        "offered_load": 0.0,
+        "utilization": 0.0,
+        "forecast": null,
+        "risk": null,
+        "prediction_status": "warming up (0/10 samples)"
+      }
+    ],
+    "metrics": {
+      "latency_ms": null,
+      "loss_percent": null,
+      "throughput_mbps": null,
+      "jitter_ms": null
+    },
+    "history": [],
+    "events": [],
+    "last_decision": {
+      "tick": 0,
+      "mode": "predictive",
+      "current": [
+        "s1",
+        "s2",
+        "s4"
+      ],
+      "target": [
+        "s1",
+        "s2",
+        "s4"
+      ],
+      "target_cost": 0.0,
+      "current_cost": 0.0,
+      "cooldown_ticks_remaining": 0,
+      "reason": "Initial path selected",
+      "explanation": "Initial route S1 \u2192 S2 \u2192 S4 selected by base propagation delay.",
+      "route_changed": false
+    },
+    "status_state": "not_started",
+    "status_title": "Experiment not started",
+    "status_detail": "Click \"Start experiment\" or \"Start guided demo\" to begin packet forwarding and live forecasting.",
+    "warmup_progress": {
+      "current": 0,
+      "required": 10,
+      "percent": 0,
+      "ready": false
+    },
+    "horizon_info": {
+      "horizon_samples": 5,
+      "sample_interval_seconds": 1,
+      "horizon_seconds": 5,
+      "label": "Predicting 5 seconds ahead (5 samples at 1s intervals)"
+    },
+    "telemetry_age_seconds": null,
+    "stale": false,
+    "controller_age_seconds": null,
+    "model": {
+      "model": "Ridge autoregressive forecast + empirical residual risk",
+      "algorithm_family": "Linear autoregression with L2 shrinkage and empirical residual bootstrap",
+      "provenance": "SYNTHETIC demonstration data, not real network evidence",
+      "window_samples": 10,
+      "horizon_samples": 5,
+      "sample_seconds": 1,
+      "congestion_threshold": 0.85,
+      "split": "Independent sequences: 60% train / 20% calibration / 20% test",
+      "train_samples": 3045,
+      "calibration_samples": 1015,
+      "test_samples": 1160,
+      "mae": 0.0794,
+      "rmse": 0.1513,
+      "precision": 0.8902,
+      "recall": 0.553,
+      "f1": 0.6822,
+      "disclaimer": "Holdout RMSE/MAE measures forecasting accuracy on test sequences. F1 measures threshold classification (>= 0.85). Not a guarantee of route optimality under unexpected network failures."
+    },
+    "metric_provenance": "analytical simulation"
+  },
+  "samples": [],
+  "probes": []
+}
